@@ -3,6 +3,9 @@ package splat;
 import splat.lexer.Lexer;
 import splat.lexer.Token;
 
+import splat.parser.Parser;
+import splat.parser.elements.ProgramAST;
+
 import java.io.File;
 import java.util.List;
 
@@ -19,10 +22,10 @@ public class Splat {
 		// Step 1.  Tokenize
 		Lexer lexer = new Lexer(progFile);
 		List<Token> tokens = lexer.tokenize();
-		
+
 		// Step 2.  Parse
-		// Parser parser = new Parser(tokens);
-		// ProgramAST progAST = parser.parse();
+		 Parser parser = new Parser(tokens);
+		 ProgramAST progAST = parser.parse();
 		
 		// Step 3.  Semantic Analysis
 		// SemanticAnalyzer analyzer = new SemanticAnalyzer(progAST);
