@@ -114,10 +114,10 @@ public class Lexer {
 
 		if (isKeyword(value)) {
 			// keyword
-			return new Token(value, tokenLine, tokenColumn);
+			return new Token(value, tokenLine, tokenColumn, "keyword");
 		} else {
 			// variable name or identifier
-			return new Token(value, tokenLine, tokenColumn);
+			return new Token(value, tokenLine, tokenColumn, "variable");
 		}
 	}
 
@@ -133,7 +133,7 @@ public class Lexer {
 
 		String value = sb.toString();
 
-		return new Token(value, tokenLine, tokenColumn);
+		return new Token(value, tokenLine, tokenColumn, "digit");
 	}
 
 
@@ -147,43 +147,43 @@ public class Lexer {
 				readNewCharacter();
 				if (currentChar == '=') {
 					readNewCharacter();
-					return new Token(":=", tokenLine, tokenColumn);
+					return new Token(":=", tokenLine, tokenColumn, "operator");
 				} else {
-					return new Token(":", tokenLine, tokenColumn);
+					return new Token(":", tokenLine, tokenColumn, "operator");
 				}
 			case ';':
 				readNewCharacter();
-				return new Token(";", tokenLine, tokenColumn);
+				return new Token(";", tokenLine, tokenColumn, "operator");
 			case ',':
 				readNewCharacter();
-				return new Token(",", tokenLine, tokenColumn);
+				return new Token(",", tokenLine, tokenColumn, "operator");
 			case '(':
 				readNewCharacter();
-				return new Token("(", tokenLine, tokenColumn);
+				return new Token("(", tokenLine, tokenColumn, "operator");
 			case ')':
 				readNewCharacter();
-				return new Token(")", tokenLine, tokenColumn);
+				return new Token(")", tokenLine, tokenColumn, "operator");
 			case '>':
 				readNewCharacter();
 				if (currentChar == '=') {
 					readNewCharacter();
-					return new Token(">=", tokenLine, tokenColumn);
+					return new Token(">=", tokenLine, tokenColumn, "operator");
 				} else {
-					return new Token(">", tokenLine, tokenColumn);
+					return new Token(">", tokenLine, tokenColumn, "operator");
 				}
 			case '<':
 				readNewCharacter();
 				if (currentChar == '=') {
 					readNewCharacter();
-					return new Token("<=", tokenLine, tokenColumn);
+					return new Token("<=", tokenLine, tokenColumn, "operator");
 				} else {
-					return new Token("<", tokenLine, tokenColumn);
+					return new Token("<", tokenLine, tokenColumn, "operator");
 				}
 			case '=':
 				readNewCharacter();
 				if (currentChar == '=') {
 					readNewCharacter();
-					return new Token("==", tokenLine, tokenColumn);
+					return new Token("==", tokenLine, tokenColumn, "operator");
 				} else {
 					// single '=' is not valid
 					throw new LexException("unexpected character: =", tokenLine, tokenColumn);
@@ -194,7 +194,7 @@ public class Lexer {
 			case '/':
 			case '%':
 				readNewCharacter();
-				return new Token(String.valueOf(ch), tokenLine, tokenColumn);
+				return new Token(String.valueOf(ch), tokenLine, tokenColumn, "operator");
 			default:
 				throw new LexException("unexpected character: " + ch, tokenLine, tokenColumn);
 		}
@@ -224,7 +224,7 @@ public class Lexer {
 
 		String value = sb.toString();
 
-		return new Token(value, tokenLine, tokenColumn);
+		return new Token(value, tokenLine, tokenColumn, "string");
 	}
 
 }

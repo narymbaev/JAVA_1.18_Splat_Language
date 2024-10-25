@@ -74,12 +74,8 @@ public class Parser {
 			
 			checkNext("begin");
 
-//			System.out.println("MAIN begin");
 
 			List<Statement> stmts = parseStmts();
-
-//			System.out.println("MAIN end");
-
 
 			checkNext("end");
 			checkNext(";");
@@ -128,7 +124,6 @@ public class Parser {
 	 * 						<loc-var-decls> begin <stmts> end ;
 	 */
 	private FunctionDecl parseFuncDecl() throws ParseException {
-		System.out.println("Function declaration");
 		// TODO Auto-generated method stub
 		Token funcNameToken = tokens.remove(0);
 
@@ -147,11 +142,7 @@ public class Parser {
 
 		checkNext("begin");
 
-		System.out.println("FUNC begin parse");
-
 		List<Statement> funcStatements = parseStmts();
-
-		System.out.println("FUNC end parse");
 
 		checkNext("end");
 		checkNext(";");
@@ -204,8 +195,6 @@ public class Parser {
 	}
 
 	private Statement parseStatement() throws ParseException {
-		System.out.println("STATEMENT " + tokens.get(0).getValue() + " " + tokens.get(1).getValue());
-
 		if (peekNext("print")) {
 			return PrintStatement();
 		} else if (peekNext("return")){
@@ -229,10 +218,7 @@ public class Parser {
 	private Statement PrintStatement() throws ParseException {
 		Token printToken = tokens.remove(0);
 
-//		if (isLiteral(printToken)) {
-//
-//		}
-		Expression expr = parseSimpleExpr();
+		Expression expr = parseExpr();
 
 		checkNext(";");
 
@@ -250,8 +236,11 @@ public class Parser {
 	private Statement ReturnStatement() throws ParseException {
 		Token returnToken = tokens.remove(0);
 
-		if (!peekNext(";")){
-			Expression expr = parseSimpleExpr();
+		if (peekNext(";")){
+			// pass
+		}
+		else {
+			Expression expr = parseExpr();
 		}
 
 		checkNext(";");
@@ -286,10 +275,6 @@ public class Parser {
 	private Statement WhileStatement() throws ParseException {
 		Token whileToken = tokens.remove(0);
 
-		if (!peekNext("(")){
-			checkNext("(");
-		};
-
 		Expression condition = parseExpr();
 
 		checkNext("do");
@@ -308,20 +293,9 @@ public class Parser {
 	private Statement AssignmentStatement() throws ParseException {
 		Token varNameToken = tokens.remove(0);
 
-//		boolean closeBraket = false;
-//		if (!peekTwoAhead(";")){
-//			closeBraket = true;
-//			checkNext("(");
-//		}
-
 		checkNext(":=");
 
 		Expression expr = parseExpr();
-
-//		if (closeBraket){
-//			checkNext(")");
-//			closeBraket = false;
-//		}
 
 		checkNext(";");
 
@@ -341,94 +315,65 @@ public class Parser {
 	private Expression parseExpr() throws ParseException {
 		if (peekNext("(")) {
 
-			System.out.println("while parse START");
-
 			checkNext("(");
 
-			Expression expr = parseCompoundExpr();  // Parse the compound expression inside the parentheses
+			Expression expr;
 
-			System.out.println("while parse END");
+			if (peekNext("-")){
+				expr = parseSimpleExpr();
+			} else if (peekNext("not") && !tokens.get(0).getType().equals("string")){
+				expr = parseSimpleExpr();
+			} else {
+				expr = parseCompoundExpr();
+			}
 
 			checkNext(")");
 
 			return expr;
 		} else {
-			// If no '(', treat it as a simple expression without operators
+			// If no '(', simpleExpression
 			return parseSimpleExpr();
 		}
 	}
 
 	private Expression parseSimpleExpr() throws ParseException {
 		if (peekNext("-")) {
-			Token minusToken = tokens.remove(0);  // Consume '-'
-			Expression factor = parseExpr();  // Parse the next factor
-			return new UnaryExpr("-", factor, minusToken);  // Create a unary expression node
-		} else if (peekTwoAhead("(")) {  // Function call detection
-			return parseFuncCall();  // Parse as a function call
+			Token minusToken = tokens.remove(0);
+			Expression factor = parseSimpleExpr();
+			return new UnaryExpr("-", factor, minusToken);
+		} else if (peekNext("not") && !tokens.get(0).getType().equals("string")) {
+			Token minusToken = tokens.remove(0);
+			Expression factor = parseSimpleExpr();
+			return new UnaryExpr("-", factor, minusToken);
+		} else if (peekTwoAhead("(")) {
+			return parseFuncCall();  // functions
 		} else if (isLiteral(tokens.get(0))) {
-			return parseLiteral();  // Parse literals like numbers or booleans
+			return parseLiteral();  // literals
 		} else {
-			return parseVariable();  // Parse variable names
+			return parseVariable();  // variable
 		}
 	}
 
 	private Expression parseCompoundExpr() throws ParseException {
 		Expression left = parseExpr();
 
-		while (peekNext("+") || peekNext("-") || peekNext("*") || peekNext("/") || peekNext("%")
-		|| peekNext(">") || peekNext("<") || peekNext("<=") || peekNext(">=")) {
+		if (peekNext("+") || peekNext("-") || peekNext("*") || peekNext("/") || peekNext("%")
+		|| peekNext(">") || peekNext("<") || peekNext("<=") || peekNext(">=") || peekNext("==") || peekNext("or")
+		|| peekNext("and")) {
 			Token operatorToken = tokens.remove(0);
 			Expression right = parseExpr();
 			left = new BinaryExpr(left, operatorToken.getValue(), right, operatorToken);
 		}
-
-		return left;
-
-//		Expression left = parseTerm();
-//
-//		while (peekNext("+") || peekNext("-")) {
-//			Token operator = tokens.remove(0);
-//			Expression right = parseTerm();
-//			left = new BinaryExpr(left, operator.getValue(), right, operator);
-//		}
-//
-//		return left;
-	}
-
-	private Expression parseTerm() throws ParseException {
-		Expression left = parseFactor();  // Parse the first factor
-
-		while (peekNext("*") || peekNext("/")) {
-			Token operator = tokens.remove(0);  // Get the operator ('*' or '/')
-			Expression right = parseFactor();  // Parse the next factor
-			left = new BinaryExpr(left, operator.getValue(), right, operator);  // Create a binary expression node
+		else {
+			throw new ParseException("Unexpectedly reached the end of file.", -1, -1);
 		}
 
 		return left;
 	}
 
-	private Expression parseFactor() throws ParseException {
-//		if (peekNext("(")) {
-//			checkNext("(");  // Consume '('
-//			Expression expr = parseExpr();  // Parse the expression inside the parentheses
-//			checkNext(")");  // Consume ')'
-//			return expr;
-//		} else
-		if (peekNext("-")) {
-			Token minusToken = tokens.remove(0);  // Consume '-'
-			Expression factor = parseFactor();  // Parse the next factor
-			return new UnaryExpr("-", factor, minusToken);  // Create a unary expression node
-		} else if (peekTwoAhead("(")) {  // Function call detection
-			return parseFuncCall();  // Parse as a function call
-		} else if (isLiteral(tokens.get(0))) {
-			return parseLiteral();  // Parse literals like numbers or booleans
-		} else {
-			return parseVariable();  // Parse variable names
-		}
-	}
 
 	private boolean isLiteral(Token token) {
-		return (!isKeyword(token.getValue()) || Returnable(token.getValue()));
+		return (!isKeyword(token.getValue()) || Returnable(token.getValue()) || token.getType().equals("string"));
 	}
 
 	private boolean isKeyword(String value) {
@@ -464,29 +409,29 @@ public class Parser {
 	}
 
 	private Expression parseLiteral() throws ParseException {
-		Token literalToken = tokens.remove(0);  // Get the literal token
-		return new LiteralExpr(literalToken);  // Create a literal expression node
+		Token literalToken = tokens.remove(0);
+		return new LiteralExpr(literalToken);
 	}
 
 	private Expression parseVariable() throws ParseException {
-		Token varToken = tokens.remove(0);  // Get the variable token
+		Token varToken = tokens.remove(0);
 
 		if (isKeyword(varToken.getValue())) {
 			throw new ParseException("variable expected, got " + varToken.getValue(), tokens.get(0));
 		}
 
-		return new VariableExpr(varToken);  // Create a variable expression node
+		return new VariableExpr(varToken);
 	}
 
 	private Expression parseFuncCall() throws ParseException {
-		Token funcNameToken = tokens.remove(0);  // Get the function name
+		Token funcNameToken = tokens.remove(0);
 		checkNext("(");  // Consume '('
 
 		List<Expression> args = new ArrayList<>();
-		if (!peekNext(")")) {  // Check for arguments
-			args.add(parseExpr());  // Parse the first argument
+		if (!peekNext(")")) {
+			args.add(parseExpr());
 
-			while (peekNext(",")) {  // Additional arguments separated by commas
+			while (peekNext(",")) {
 				checkNext(",");
 				args.add(parseExpr());
 			}
@@ -518,7 +463,5 @@ public class Parser {
 		}
 		return localVars;
 	}
-
-
 
 }
