@@ -74,8 +74,11 @@ public class Parser {
 			
 			checkNext("begin");
 
+//			System.out.println("MAIN begin");
 
 			List<Statement> stmts = parseStmts();
+
+//			System.out.println("MAIN end");
 
 
 			checkNext("end");
@@ -125,6 +128,7 @@ public class Parser {
 	 * 						<loc-var-decls> begin <stmts> end ;
 	 */
 	private FunctionDecl parseFuncDecl() throws ParseException {
+		System.out.println("Function declaration");
 		// TODO Auto-generated method stub
 		Token funcNameToken = tokens.remove(0);
 
@@ -143,7 +147,11 @@ public class Parser {
 
 		checkNext("begin");
 
+		System.out.println("FUNC begin parse");
+
 		List<Statement> funcStatements = parseStmts();
+
+		System.out.println("FUNC end parse");
 
 		checkNext("end");
 		checkNext(";");
@@ -196,6 +204,7 @@ public class Parser {
 	}
 
 	private Statement parseStatement() throws ParseException {
+		System.out.println("STATEMENT " + tokens.get(0).getValue() + " " + tokens.get(1).getValue());
 
 		if (peekNext("print")) {
 			return PrintStatement();
@@ -242,8 +251,9 @@ public class Parser {
 		Token returnToken = tokens.remove(0);
 
 		if (!peekNext(";")){
-			Expression expr = parseExpr();
+			Expression expr = parseSimpleExpr();
 		}
+
 		checkNext(";");
 
 		return new Return(returnToken);
@@ -275,6 +285,22 @@ public class Parser {
 
 	private Statement WhileStatement() throws ParseException {
 		Token whileToken = tokens.remove(0);
+
+		if (!peekNext("(")){
+			checkNext("(");
+		};
+
+		Expression condition = parseExpr();
+
+		checkNext("do");
+
+		List<Statement> whileStatements = parseStmts();
+
+		checkNext("end");
+
+		checkNext("while");
+
+		checkNext(";");
 
 		return new While(whileToken);
 	}
@@ -315,14 +341,15 @@ public class Parser {
 	private Expression parseExpr() throws ParseException {
 		if (peekNext("(")) {
 
-			checkNext("(");  // Consume the opening '('
+			System.out.println("while parse START");
+
+			checkNext("(");
 
 			Expression expr = parseCompoundExpr();  // Parse the compound expression inside the parentheses
 
-			if (!peekNext(")")) {
-				throw new ParseException("Expected ')' to end the expression", tokens.get(0));
-			}
-			checkNext(")");  // Consume the closing ')'
+			System.out.println("while parse END");
+
+			checkNext(")");
 
 			return expr;
 		} else {
@@ -401,7 +428,7 @@ public class Parser {
 	}
 
 	private boolean isLiteral(Token token) {
-		return !isKeyword(token.getValue());
+		return (!isKeyword(token.getValue()) || Returnable(token.getValue()));
 	}
 
 	private boolean isKeyword(String value) {
@@ -415,6 +442,20 @@ public class Parser {
 				return true;
 			}
 		}
+		return false;
+	}
+
+	private boolean Returnable(String value) {
+		String[] keywords = {
+				"true", "false"
+		};
+
+		for (String keyword : keywords) {
+			if (value.equals(keyword)) {
+				return true;
+			}
+		}
+
 		return false;
 	}
 

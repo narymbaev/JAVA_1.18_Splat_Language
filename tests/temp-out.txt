@@ -1,0 +1,12 @@
+Function declaration
+FUNC begin parse
+STATEMENT if param2
+STATEMENT print param2 is true
+STATEMENT print param2 is false
+STATEMENT return ;
+STATEMENT print myFunction() called
+FUNC end parse
+STATEMENT myBoolean :=
+STATEMENT print program started
+STATEMENT print_line ;
+STATEMENT myFunction (

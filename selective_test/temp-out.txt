@@ -1,1 +1,7 @@
-Function declaration
+STATEMENT while (
+while parse START
+while parse END
+STATEMENT i :=
+while parse START
+while parse END
+STATEMENT ( i
