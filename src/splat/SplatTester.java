@@ -157,8 +157,8 @@ public class  SplatTester {
 		// Redirect the program output to a file, instead of the console window
 		PrintStream originalOut = new PrintStream(System.out);
 		File progOutput = new File(testDir, "temp-out.txt");
-		FileOutputStream fos = new FileOutputStream(progOutput, true);
-		PrintStream outs = new PrintStream(fos);
+//		FileOutputStream fos = new FileOutputStream(progOutput, true);
+		PrintStream outs = new PrintStream(progOutput);
 		System.setOut(outs);
 
 		try {
