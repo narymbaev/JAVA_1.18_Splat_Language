@@ -158,6 +158,10 @@ public class Parser {
 		// TODO Auto-generated method stub
 		Token varNameToken = tokens.remove(0);
 
+		if (isKeyword(varNameToken.getValue())) {
+			throw new ParseException("variable expected, got " + varNameToken.getValue(), varNameToken);
+		};
+
 		checkNext(":");
 
 		String varType = tokens.remove(0).getValue();
@@ -425,6 +429,11 @@ public class Parser {
 
 	private Expression parseVariable() throws ParseException {
 		Token varToken = tokens.remove(0);  // Get the variable token
+
+		if (isKeyword(varToken.getValue())) {
+			throw new ParseException("variable expected, got " + varToken.getValue(), tokens.get(0));
+		}
+
 		return new VariableExpr(varToken);  // Create a variable expression node
 	}
 
