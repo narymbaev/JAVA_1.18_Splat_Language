@@ -21,15 +21,12 @@ public class Assignment extends Statement {
 
     @Override
     public void analyze(Map<String, FunctionDecl> funcMap, Map<String, Type> varAndParamMap) throws SemanticAnalysisException {
-        System.out.println("Assignment analyze started");
-
         if (!varAndParamMap.containsKey(varName)) {
             throw new SemanticAnalysisException("Variable not defined: " + varName, this);
         }
         // Type-check the expression
         Type expectedType = varAndParamMap.get(varName);
         Type actualType = expr.analyzeAndGetType(funcMap, varAndParamMap);
-        System.out.println("Expected: " + expectedType + " Actual: " + actualType);
 
         if (!expectedType.equals(actualType)) {
             throw new SemanticAnalysisException("Type mismatch in assignment to " + varName, this);

@@ -24,7 +24,6 @@ public class While extends Statement {
     public void analyze(Map<String, FunctionDecl> funcMap, Map<String, Type> varAndParamMap) throws SemanticAnalysisException {
         Type conditionType = condition.analyzeAndGetType(funcMap, varAndParamMap);
 
-        System.out.println("ASD " + conditionType);
 
         if (conditionType == null) {
             throw new SemanticAnalysisException("While loop condition must be a boolean", this);
@@ -34,8 +33,6 @@ public class While extends Statement {
         if (!conditionType.equals(Type.BOOL) && !conditionType.equals(Type.BOOLEAN)) {
             throw new SemanticAnalysisException("While loop condition must be a boolean", this);
         }
-
-        System.out.println("ASD");
 
         // Analyze the loop body
         for (Statement stmt : stmts) {

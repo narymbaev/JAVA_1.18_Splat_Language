@@ -19,14 +19,12 @@ public class Return extends Statement {
 
     @Override
     public void analyze(Map<String, FunctionDecl> funcMap, Map<String, Type> varAndParamMap) throws SemanticAnalysisException {
-        System.out.println("Return analyze started");
         Type expectedType = varAndParamMap.get("0result");
 
         if (expectedType == null) {
             throw new SemanticAnalysisException("Return statement is not needed", this);
         }
 
-        System.out.println("Expected " + expectedType + " " + expr);
         if (expr == null && !expectedType.getValue().equals("void")){
             throw new SemanticAnalysisException("Type mismatch in return statement", this);
         }
@@ -38,8 +36,6 @@ public class Return extends Statement {
         } else {
             actualType = expr.analyzeAndGetType(funcMap, varAndParamMap);
         }
-
-        System.out.println("Actual " + actualType + " " + expr);
 
         if (!expectedType.equals(actualType)) {
             throw new SemanticAnalysisException("Type mismatch in return statement", this);

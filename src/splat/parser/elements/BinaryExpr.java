@@ -22,10 +22,8 @@ public class BinaryExpr extends Expression {
 
     @Override
     public Type analyzeAndGetType(Map<String, FunctionDecl> funcMap, Map<String, Type> varAndParamMap) {
-        System.out.println("The left " + left + " right " + right);
         Type leftType = left.analyzeAndGetType(funcMap, varAndParamMap);
         Type rightType = right.analyzeAndGetType(funcMap, varAndParamMap);
-        System.out.println("The " + operator + " " + leftType + " " + rightType);
         if (leftType == null || rightType == null) {
             return null;
         }

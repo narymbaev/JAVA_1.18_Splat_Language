@@ -24,8 +24,6 @@ public class FuncCall extends Statement {
 
     @Override
     public void analyze(Map<String, FunctionDecl> funcMap, Map<String, Type> varAndParamMap) throws SemanticAnalysisException {
-        // FIXME
-        // Check if function is defined
         if (!funcMap.containsKey(funcName)) {
             throw new SemanticAnalysisException("Function not defined: " + funcName, this);
         }

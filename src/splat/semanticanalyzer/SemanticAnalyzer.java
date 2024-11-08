@@ -37,22 +37,16 @@ public class SemanticAnalyzer {
 		// program body
 		setProgVarAndFuncMaps();
 
-		System.out.println(funcMap + " " + progVarMap);
-
 
 		// Perform semantic analysis on the functions
 		for (FunctionDecl funcDecl : funcMap.values()) {
-			System.out.println("Func iteration " + funcDecl.getReturnType().getValue());
 			analyzeFuncDecl(funcDecl);
 		}
-		System.out.println("I DONE 2");
 
 		
 		// Perform semantic analysis on the program body
 		for (Statement stmt : progAST.getStmts()) {
-			System.out.println("Stmt iteration " + stmt.toString());
 			stmt.analyze(funcMap, progVarMap);
-			System.out.println("I DONE 3");
 		}
 		
 	}
@@ -71,27 +65,15 @@ public class SemanticAnalyzer {
 		
 		// Perform semantic analysis on the function body
 		for (Statement stmt : funcDecl.getStmts()) {
-			System.out.println(stmt.toString());
 			stmt.analyze(funcMap, varAndParamMap);
 
 			// Check if stmt is a return statement
 			if (stmt instanceof Return) {
 				hasReturnStatement = true;
 			}
-//				Return returnStmt = (Return) stmt;
-//
-//				 If the function has a non-void return type, check the return expression
-//				if (!expectedReturnType.equals(Type.VOID)) {
-//					Type returnType = returnStmt.getReturnType(funcMap, varAndParamMap);
-//					if (!returnType.equals(expectedReturnType)) {
-//						throw new SemanticAnalysisException("Return type mismatch: Expected " + expectedReturnType.getValue() + " but found " + returnType.getValue(), stmt);
-//					}
-//				}
-//			}
 		}
 
 		Type res = varAndParamMap.get("1result");
-//		System.out.println("Result " + res);
 
 		if (res != null && !res.getValue().equals("void")) {
 			hasReturnStatement = true;
@@ -194,7 +176,6 @@ public class SemanticAnalyzer {
 				progVarMap.put(label, varDecl.getType());
 			}
 			else {
-				System.out.println("Unknown declaration: " + decl);
 			}
 		}
 	}

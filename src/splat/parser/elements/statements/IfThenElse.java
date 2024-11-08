@@ -25,13 +25,10 @@ public class IfThenElse extends Statement {
     @Override
     public void analyze(Map<String, FunctionDecl> funcMap, Map<String, Type> varAndParamMap) throws SemanticAnalysisException {
         // Ensure condition is boolean
-        System.out.println("AAAAAA");
 
-        System.out.println("The cond " + condition);
 
         Type conditionType = condition.analyzeAndGetType(funcMap, varAndParamMap);
 
-        System.out.println("AAAAAA " + conditionType);
 
         if (conditionType == null){
             throw new SemanticAnalysisException("Condition is not set properly", this);

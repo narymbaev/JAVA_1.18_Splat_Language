@@ -19,7 +19,6 @@ public class Print extends Statement{
 
     @Override
     public void analyze(Map<String, FunctionDecl> funcMap, Map<String, Type> varAndParamMap) throws SemanticAnalysisException {
-        System.out.println("Print analyze started");
         Type type = expr.analyzeAndGetType(funcMap, varAndParamMap);
         if (type == null) {
             throw new SemanticAnalysisException("Something went wrong", this);
