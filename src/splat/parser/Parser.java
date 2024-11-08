@@ -351,9 +351,9 @@ public class Parser {
 			Expression factor = parseSimpleExpr();
 			return new UnaryExpr("-", factor, minusToken);
 		} else if (peekNext("not") && !tokens.get(0).getType().equals("string")) {
-			Token minusToken = tokens.remove(0);
+			Token notToken = tokens.remove(0);
 			Expression factor = parseSimpleExpr();
-			return new UnaryExpr("-", factor, minusToken);
+			return new UnaryExpr("not", factor, notToken);
 		} else if (peekTwoAhead("(")) {
 			return parseFuncCall();  // functions
 		} else if (isVariable(tokens.get(0))) {

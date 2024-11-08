@@ -35,6 +35,7 @@ public class BinaryExpr extends Expression {
             case "-":
             case "*":
             case "/":
+            case "%":
                 if ((leftType.equals(Type.INT) || leftType.equals(Type.FLOAT)) &&
                         leftType.equals(rightType)) {
                     return leftType; // Both operands must be of the same type, int or float
@@ -44,6 +45,8 @@ public class BinaryExpr extends Expression {
                 }
             case "&&":
             case "||":
+            case "or":
+            case "and":
                 if (leftType.equals(Type.BOOLEAN) && rightType.equals(Type.BOOLEAN)) {
                     return Type.BOOLEAN;
                 } else {

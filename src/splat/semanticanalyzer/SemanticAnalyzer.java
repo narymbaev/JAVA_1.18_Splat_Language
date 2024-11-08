@@ -93,7 +93,7 @@ public class SemanticAnalyzer {
 		Type res = varAndParamMap.get("1result");
 //		System.out.println("Result " + res);
 
-		if (res != null && !res.getValue().equals("Void")) {
+		if (res != null && !res.getValue().equals("void")) {
 			hasReturnStatement = true;
 		}
 
@@ -135,6 +135,14 @@ public class SemanticAnalyzer {
 			if (labels.contains(paramLabel)) {
 				throw new SemanticAnalysisException("Cannot have duplicate label '" + paramLabel + "' in function parameters", param);
 			}
+
+			// Check conflict with function names
+			for (FunctionDecl func : funcMap.values()) {
+				if (func.getLabel().toString().equals(paramLabel)) {
+					throw new SemanticAnalysisException("Cannot have parameter label '" + paramLabel + "' matching a function name", param);
+				}
+			}
+
 			labels.add(paramLabel);
 		}
 
@@ -142,6 +150,13 @@ public class SemanticAnalyzer {
 			String localVarLabel = localVar.getLabel().toString();
 			if (labels.contains(localVarLabel)) {
 				throw new SemanticAnalysisException("Cannot have duplicate label '" + localVarLabel + "' in function local variables", localVar);
+			}
+
+			// Check conflict with function names
+			for (FunctionDecl func : funcMap.values()) {
+				if (func.getLabel().toString().equals(localVarLabel)) {
+					throw new SemanticAnalysisException("Cannot have parameter label '" + localVarLabel + "' matching a function name", localVar);
+				}
 			}
 			labels.add(localVarLabel);
 		}

@@ -26,7 +26,6 @@ public class Assignment extends Statement {
         if (!varAndParamMap.containsKey(varName)) {
             throw new SemanticAnalysisException("Variable not defined: " + varName, this);
         }
-        System.out.println("Assignment analyze finished");
         // Type-check the expression
         Type expectedType = varAndParamMap.get(varName);
         Type actualType = expr.analyzeAndGetType(funcMap, varAndParamMap);

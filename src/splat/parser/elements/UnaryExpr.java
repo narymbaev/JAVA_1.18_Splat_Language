@@ -39,6 +39,14 @@ public class UnaryExpr extends Expression {
 //            else {
 //                throw new SemanticAnalysisException("Invalid type for unary operator '!'", this);
 //            }
+        } else if (operator.equals("not")) {
+            if (exprType.equals(Type.BOOLEAN)) {
+                return Type.BOOLEAN;
+            }
+        } else if (operator.equals("and")) {
+            if (exprType.equals(Type.BOOLEAN)) {
+                return Type.BOOLEAN;
+            }
         }
 //        else {
 //            throw new SemanticAnalysisException("Unknown unary operator: " + operator, this);
