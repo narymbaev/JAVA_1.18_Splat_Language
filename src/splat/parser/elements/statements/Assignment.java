@@ -31,7 +31,7 @@ public class Assignment extends Statement {
         // Type-check the expression
         Type expectedType = varAndParamMap.get(varName);
         Type actualType = expr.analyzeAndGetType(funcMap, varAndParamMap);
-        System.out.println("Expected: " + expectedType + " Actual: " + actualType);
+        System.out.println("Expected: " + expectedType.getValue() + " Actual: " + actualType.getValue());
 
         if (!expectedType.equals(actualType)) {
             throw new SemanticAnalysisException("Type mismatch in assignment to " + varName, this);

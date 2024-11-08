@@ -3,6 +3,13 @@ I M RUNNING
 For done
 I DONE
 I DONE 2
-Stmt iteration splat.parser.elements.statements.IfThenElse@4c873330
-AAAAAA
-AAAAAA null
+Stmt iteration splat.parser.elements.statements.Assignment@4c873330
+I HEE
+Expected: Integer Actual: Integer
+I DONE 3
+Stmt iteration splat.parser.elements.statements.Assignment@119d7047
+I HEE
+Expected: Integer Actual: Integer
+I DONE 3
+Stmt iteration splat.parser.elements.statements.While@776ec8df
+I DONE 3
