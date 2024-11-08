@@ -27,13 +27,15 @@ public class IfThenElse extends Statement {
         // Ensure condition is boolean
         System.out.println("AAAAAA");
 
+        System.out.println("The cond " + condition);
+
         Type conditionType = condition.analyzeAndGetType(funcMap, varAndParamMap);
 
         System.out.println("AAAAAA " + conditionType);
 
-        //if (conditionType == null){
-            //throw new SemanticAnalysisException("Condition is not set properly", this);
-        //}
+        if (conditionType == null){
+            throw new SemanticAnalysisException("Condition is not set properly", this);
+        }
 
         if (!conditionType.equals(Type.BOOLEAN)) {
             throw new SemanticAnalysisException("Condition in if statement must be boolean", this);

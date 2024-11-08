@@ -1,11 +1,25 @@
-{} {}
-I M RUNNING
-Label: myFunction
-Function Declaration: myFunction
-Function Declaration: myFunction
-For done
-I DONE
-Func iteration
-splat.parser.elements.statements.IfThenElse@6e2c634b
-AAAAAA
-AAAAAA splat.parser.elements.Type@37a71e93
+{} {x=splat.parser.elements.Type@d7ee191e, y=splat.parser.elements.Type@d7ee191e, z=splat.parser.elements.Type@d7ee191e}
+I DONE 2
+Stmt iteration splat.parser.elements.statements.Assignment@1c6b6478
+Assignment analyze started
+Assignment analyze finished
+Expected: splat.parser.elements.Type@d7ee191e Actual: splat.parser.elements.Type@d7ee191e
+I DONE 3
+Stmt iteration splat.parser.elements.statements.Assignment@67f89fa3
+Assignment analyze started
+Assignment analyze finished
+Expected: splat.parser.elements.Type@d7ee191e Actual: splat.parser.elements.Type@d7ee191e
+I DONE 3
+Stmt iteration splat.parser.elements.statements.Assignment@4ac68d3e
+Assignment analyze started
+Assignment analyze finished
+The left splat.parser.elements.BinaryExpr@277c0f21 right splat.parser.elements.BinaryExpr@6073f712
+The left splat.parser.elements.VariableExpr@43556938 right splat.parser.elements.VariableExpr@3d04a311
+The * splat.parser.elements.Type@d7ee191e splat.parser.elements.Type@d7ee191e
+The left splat.parser.elements.VariableExpr@7a46a697 right splat.parser.elements.VariableExpr@5f205aa
+The * splat.parser.elements.Type@d7ee191e splat.parser.elements.Type@d7ee191e
+The + splat.parser.elements.Type@d7ee191e splat.parser.elements.Type@d7ee191e
+Expected: splat.parser.elements.Type@d7ee191e Actual: splat.parser.elements.Type@d7ee191e
+I DONE 3
+Stmt iteration splat.parser.elements.statements.Print@6d86b085
+I DONE 3

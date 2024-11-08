@@ -22,8 +22,16 @@ public class Return extends Statement {
         // Get the function return type
         Type expectedType = varAndParamMap.get("0result");
 
+        System.out.println("Expected " + expectedType);
+        if (expr == null && !expectedType.getValue().equals("Void")){
+            throw new SemanticAnalysisException("Type mismatch in return statement", this);
+        }
+
         // Ensure return expression type matches the function's return type
         Type actualType = expr.analyzeAndGetType(funcMap, varAndParamMap);
+
+        System.out.println("Actual " + actualType);
+
         if (!expectedType.equals(actualType)) {
             throw new SemanticAnalysisException("Type mismatch in return statement", this);
         }

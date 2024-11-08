@@ -289,7 +289,7 @@ public class Parser {
 
 		checkNext(";");
 
-		return new While(whileToken);
+		return new While(whileToken, condition, whileStatements);
 	}
 
 	private Statement AssignmentStatement() throws ParseException {
@@ -356,10 +356,12 @@ public class Parser {
 			return new UnaryExpr("-", factor, minusToken);
 		} else if (peekTwoAhead("(")) {
 			return parseFuncCall();  // functions
+		} else if (isVariable(tokens.get(0))) {
+			return parseVariable();  // literals
 		} else if (isLiteral(tokens.get(0))) {
-			return parseLiteral();  // literals
+			return parseLiteral(); // variable
 		} else {
-			return parseVariable();  // variable
+			throw new ParseException("Statement parse exception", -1, -1);
 		}
 	}
 
@@ -383,6 +385,10 @@ public class Parser {
 
 	private boolean isLiteral(Token token) {
 		return (!isKeyword(token.getValue()) || Returnable(token.getValue()) || token.getType().equals("string"));
+	}
+
+	private boolean isVariable(Token token) {
+		return token.getType().equals("variable");
 	}
 
 	private boolean isKeyword(String value) {

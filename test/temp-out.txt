@@ -1,15 +1,10 @@
-{} {}
-I M RUNNING
-For done
-I DONE
-I DONE 2
-Stmt iteration splat.parser.elements.statements.Assignment@4c873330
-I HEE
-Expected: Integer Actual: Integer
-I DONE 3
-Stmt iteration splat.parser.elements.statements.Assignment@119d7047
-I HEE
-Expected: Integer Actual: Integer
-I DONE 3
-Stmt iteration splat.parser.elements.statements.While@776ec8df
-I DONE 3
+{donothing=donothing} {}
+Func iteration Integer
+splat.parser.elements.statements.Assignment@404b9385
+Assignment analyze started
+Assignment analyze finished
+The left splat.parser.elements.VariableExpr@6d311334 right splat.parser.elements.LiteralExpr@682a0b20
+The + splat.parser.elements.Type@d7ee191e splat.parser.elements.Type@d7ee191e
+Expected: splat.parser.elements.Type@d7ee191e Actual: splat.parser.elements.Type@d7ee191e
+splat.parser.elements.statements.Return@3d075dc0
+Expected splat.parser.elements.Type@d7ee191e

@@ -11,6 +11,7 @@ import splat.parser.elements.ProgramAST;
 import splat.parser.elements.Statement;
 import splat.parser.elements.Type;
 import splat.parser.elements.VariableDecl;
+import splat.parser.elements.statements.Return;
 
 public class SemanticAnalyzer {
 
@@ -27,24 +28,21 @@ public class SemanticAnalyzer {
 		funcMap = new HashMap<String, FunctionDecl>();
 		progVarMap = new HashMap<String, Type>();
 
-		System.out.println(funcMap + " " + progVarMap);
-		
 		// Checks to make sure we don't use the same labels more than once
 		// for our program functions and variables 
 		checkNoDuplicateProgLabels();
-
-		System.out.println("I M RUNNING");
-
 
 		// This sets the maps that will be needed later when we need to
 		// typecheck variable references and function calls in the 
 		// program body
 		setProgVarAndFuncMaps();
 
-		System.out.println("I DONE");
+		System.out.println(funcMap + " " + progVarMap);
+
+
 		// Perform semantic analysis on the functions
 		for (FunctionDecl funcDecl : funcMap.values()) {
-			System.out.println("Func iteration");
+			System.out.println("Func iteration " + funcDecl.getReturnType().getValue());
 			analyzeFuncDecl(funcDecl);
 		}
 		System.out.println("I DONE 2");
@@ -67,12 +65,36 @@ public class SemanticAnalyzer {
 		
 		// Get the types of the parameters and local variables
 		Map<String, Type> varAndParamMap = getVarAndParamMap(funcDecl);
+
+		boolean hasReturnStatement = false;
+		Type expectedReturnType = funcDecl.getReturnType();
 		
 		// Perform semantic analysis on the function body
 		for (Statement stmt : funcDecl.getStmts()) {
 			System.out.println(stmt.toString());
 			stmt.analyze(funcMap, varAndParamMap);
+
+			// Check if stmt is a return statement
+			if (stmt instanceof Return) {
+				hasReturnStatement = true;
+			}
+//				Return returnStmt = (Return) stmt;
+//
+//				 If the function has a non-void return type, check the return expression
+//				if (!expectedReturnType.equals(Type.VOID)) {
+//					Type returnType = returnStmt.getReturnType(funcMap, varAndParamMap);
+//					if (!returnType.equals(expectedReturnType)) {
+//						throw new SemanticAnalysisException("Return type mismatch: Expected " + expectedReturnType.getValue() + " but found " + returnType.getValue(), stmt);
+//					}
+//				}
+//			}
 		}
+
+		// If no return statement was found for a non-void function, throw an error
+		if (!hasReturnStatement && !expectedReturnType.equals(Type.VOID)) {
+			throw new SemanticAnalysisException("Missing return statement in function " + funcDecl.getReturnType(), funcDecl);
+		}
+
 	}
 	
 	
@@ -136,19 +158,12 @@ public class SemanticAnalyzer {
 	}
 	
 	private void setProgVarAndFuncMaps() {
-
-
-
 		for (Declaration decl : progAST.getDecls()) {
 
 			String label = decl.getLabel().toString();
 
 			if (decl instanceof FunctionDecl) {
 				FunctionDecl funcDecl = (FunctionDecl) decl;
-
-				System.out.println("Label: " + label);
-				System.out.println("Function Declaration: " + funcDecl);
-				System.out.println("Function Declaration: " + decl);
 
 				funcMap.put(label, funcDecl);
 
@@ -160,6 +175,5 @@ public class SemanticAnalyzer {
 				System.out.println("Unknown declaration: " + decl);
 			}
 		}
-		System.out.println("For done");
 	}
 }

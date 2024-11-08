@@ -19,6 +19,11 @@ public class UnaryExpr extends Expression {
     @Override
     public Type analyzeAndGetType(Map<String, FunctionDecl> funcMap, Map<String, Type> varAndParamMap) {
         Type exprType = expr.analyzeAndGetType(funcMap, varAndParamMap);
+        System.out.println("The " + operator + " Type " + exprType);
+
+        if (exprType == null){
+            return null;
+        }
 
         if (operator.equals("-")) {
             if (exprType.equals(Type.INT) || exprType.equals(Type.FLOAT)) {

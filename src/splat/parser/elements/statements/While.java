@@ -1,20 +1,46 @@
 package splat.parser.elements.statements;
 
 import splat.lexer.Token;
+import splat.parser.elements.Expression;
 import splat.parser.elements.FunctionDecl;
 import splat.parser.elements.Statement;
 import splat.parser.elements.Type;
+import splat.semanticanalyzer.SemanticAnalysisException;
 
+import java.util.List;
 import java.util.Map;
 
 public class While extends Statement {
-    public While(Token tok) {
+    private Expression condition;
+    private List<Statement> stmts;
+
+    public While(Token tok, Expression condition, List<Statement> stmts) {
         super(tok);
+        this.condition = condition;
+        this.stmts = stmts;
     }
 
     @Override
-    public void analyze(Map<String, FunctionDecl> funcMap, Map<String, Type> varAndParamMap) {
-        // FIXME
+    public void analyze(Map<String, FunctionDecl> funcMap, Map<String, Type> varAndParamMap) throws SemanticAnalysisException {
+        Type conditionType = condition.analyzeAndGetType(funcMap, varAndParamMap);
+
+        System.out.println("ASD " + conditionType);
+
+        if (conditionType == null) {
+            throw new SemanticAnalysisException("While loop condition must be a boolean", this);
+        }
+
+        // Check if the condition type is boolean
+        if (!conditionType.equals(Type.BOOL) && !conditionType.equals(Type.BOOLEAN)) {
+            throw new SemanticAnalysisException("While loop condition must be a boolean", this);
+        }
+
+        System.out.println("ASD");
+
+        // Analyze the loop body
+        for (Statement stmt : stmts) {
+            stmt.analyze(funcMap, varAndParamMap);
+        }
 
     }
 }

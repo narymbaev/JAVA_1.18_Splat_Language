@@ -2,6 +2,7 @@ package splat.parser.elements;
 
 import splat.lexer.Token;
 
+import javax.sound.midi.SysexMessage;
 import java.util.Map;
 
 
@@ -21,8 +22,13 @@ public class BinaryExpr extends Expression {
 
     @Override
     public Type analyzeAndGetType(Map<String, FunctionDecl> funcMap, Map<String, Type> varAndParamMap) {
+        System.out.println("The left " + left + " right " + right);
         Type leftType = left.analyzeAndGetType(funcMap, varAndParamMap);
         Type rightType = right.analyzeAndGetType(funcMap, varAndParamMap);
+        System.out.println("The " + operator + " " + leftType + " " + rightType);
+        if (leftType == null || rightType == null) {
+            return null;
+        }
 
         switch (operator) {
             case "+":
@@ -52,8 +58,20 @@ public class BinaryExpr extends Expression {
 //                    throw new SemanticAnalysisException("Type mismatch for comparison operator " + operator, this);
                     return null;
                 }
+            case "<":
+            case ">":
+            case "<=":
+            case ">=":
+                if ((leftType.equals(Type.INT) || leftType.equals(Type.FLOAT) || leftType.equals(Type.STRING)) &&
+                        leftType.equals(rightType)) {
+                    return Type.BOOL; // Relational operators result in boolean
+                } else {
+                    // throw new SemanticAnalysisException("Type mismatch for relational operator " + operator, this);
+                    return null;
+                }
+
             default:
-//                throw new SemanticAnalysisException("Unknown binary operator: " + operator, this);
+                // throw new SemanticAnalysisException("Unknown binary operator: " + operator, this);
                 return null;
         }
     }
