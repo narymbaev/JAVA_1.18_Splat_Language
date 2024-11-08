@@ -31,9 +31,9 @@ public class IfThenElse extends Statement {
 
         System.out.println("AAAAAA " + conditionType);
 
-        if (conditionType == null){
-            throw new SemanticAnalysisException("Condition is not set properly", this);
-        }
+        //if (conditionType == null){
+            //throw new SemanticAnalysisException("Condition is not set properly", this);
+        //}
 
         if (!conditionType.equals(Type.BOOLEAN)) {
             throw new SemanticAnalysisException("Condition in if statement must be boolean", this);
