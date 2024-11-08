@@ -1,0 +1,11 @@
+{} {}
+I M RUNNING
+Label: myFunction
+Function Declaration: myFunction
+Function Declaration: myFunction
+For done
+I DONE
+Func iteration
+splat.parser.elements.statements.IfThenElse@7a07c5b4
+AAAAAA
+AAAAAA splat.parser.elements.Type@26a1ab54

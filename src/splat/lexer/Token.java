@@ -7,11 +7,11 @@ public class Token {
     private int column;
     private String type;
 
-    public Token(String value, int line, int column, String Type) {
+    public Token(String value, int line, int column, String type) {
         this.value = value;
         this.line = line;
         this.column = column;
-        this.type = Type;
+        this.type = type;
     }
     public String getValue() {
         return value;

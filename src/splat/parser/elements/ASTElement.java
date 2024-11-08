@@ -6,10 +6,12 @@ public abstract class ASTElement {
 
 	private int line;
 	private int column;
+	private Token token;
 	
 	public ASTElement(Token tok) {
 		this.line = tok.getLine();
 		this.column = tok.getColumn();
+		this.token = tok;
 	}
 	
 	public int getLine() {
@@ -18,5 +20,9 @@ public abstract class ASTElement {
 	
 	public int getColumn() {
 		return column;
+	}
+
+	public Token getToken() {
+		return token;
 	}
 }

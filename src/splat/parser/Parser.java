@@ -3,6 +3,7 @@ package splat.parser;
 import java.util.ArrayList;
 import java.util.List;
 
+import jdk.nashorn.internal.ir.FunctionCall;
 import splat.lexer.Token;
 import splat.parser.elements.*;
 import splat.parser.elements.statements.*;
@@ -134,7 +135,7 @@ public class Parser {
 		checkNext(")");
 		checkNext(":");
 
-		String funcReturnType = tokens.remove(0).getValue();
+		Type funcReturnType = new Type(tokens.remove(0).getValue());
 
 		checkNext("is");
 
@@ -147,7 +148,7 @@ public class Parser {
 		checkNext("end");
 		checkNext(";");
 
-		return new FunctionDecl(funcNameToken);
+		return new FunctionDecl(funcNameToken, funcReturnType, funcParams, funcLocalVars, funcStatements);
 	}
 
 	/*
@@ -163,11 +164,11 @@ public class Parser {
 
 		checkNext(":");
 
-		String varType = tokens.remove(0).getValue();
+		Type varType = new Type(tokens.remove(0).getValue());
 
 		checkNext(";");
 
-		return new VariableDecl(varNameToken);
+		return new VariableDecl(varNameToken, varType);
 	}
 
 	private VariableDecl parseFuncVarDecl() throws ParseException {
@@ -175,9 +176,9 @@ public class Parser {
 
 		checkNext(":");
 
-		String varType = tokens.remove(0).getValue();
+		Type varType = new Type(tokens.remove(0).getValue());
 
-		return new VariableDecl(varNameToken);
+		return new VariableDecl(varNameToken, varType);
 	}
 	
 	/*
@@ -222,7 +223,7 @@ public class Parser {
 
 		checkNext(";");
 
-		return new Print(printToken);
+		return new Print(printToken, expr);
 	}
 
 	private Statement PrintLineStatement() throws ParseException {
@@ -235,17 +236,18 @@ public class Parser {
 
 	private Statement ReturnStatement() throws ParseException {
 		Token returnToken = tokens.remove(0);
-
+		Expression expr = null;
+		
 		if (peekNext(";")){
 			// pass
 		}
 		else {
-			Expression expr = parseExpr();
+			expr = parseExpr();
 		}
 
 		checkNext(";");
 
-		return new Return(returnToken);
+		return new Return(returnToken, expr);
 	}
 
 	private Statement IfThenElseStatement() throws ParseException {
@@ -269,7 +271,7 @@ public class Parser {
 		checkNext(";");
 
 
-		return new IfThenElse(varIfToken);
+		return new IfThenElse(varIfToken, condition, thenStatements, elseStatements);
 	}
 
 	private Statement WhileStatement() throws ParseException {
@@ -299,7 +301,7 @@ public class Parser {
 
 		checkNext(";");
 
-		return new Assignment(varNameToken);
+		return new Assignment(varNameToken ,expr);
 	}
 
 	private Statement FunctionCallStatement() throws ParseException {
@@ -307,9 +309,16 @@ public class Parser {
 
 		Expression expr = parseFuncCall();
 
+		List<Expression> args = new ArrayList<>();
+
+		if (expr instanceof FunctionCallExpr) {
+			FunctionCallExpr funcExpr = (FunctionCallExpr) expr;
+			args = funcExpr.getArguments();
+		}
+
 		checkNext(";");
 
-		return new FuncCall(functionNameToken);
+		return new FuncCall(functionNameToken, expr, args);
 	}
 
 	private Expression parseExpr() throws ParseException {
