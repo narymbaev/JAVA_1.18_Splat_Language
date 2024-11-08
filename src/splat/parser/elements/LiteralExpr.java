@@ -18,7 +18,7 @@ public class LiteralExpr extends Expression {
         } else if (value.matches("-?\\d*\\.\\d+")) {
             return Type.FLOAT; // Assuming a FLOAT type exists for decimal numbers
         } else if (value.equals("true") || value.equals("false")) {
-            return Type.BOOL; // Assuming a BOOL type exists for booleans
+            return Type.BOOLEAN; // Assuming a BOOLEAN type exists for booleans
         } else {
             return Type.STRING; // Assuming a STRING type exists for other literals
         }

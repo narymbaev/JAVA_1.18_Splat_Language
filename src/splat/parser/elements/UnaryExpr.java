@@ -33,8 +33,8 @@ public class UnaryExpr extends Expression {
 //                throw new SemanticAnalysisException("Invalid type for unary operator '-'", this);
 //            }
         } else if (operator.equals("!")) {
-            if (exprType.equals(Type.BOOL)) {
-                return Type.BOOL; // Logical NOT applies to booleans
+            if (exprType.equals(Type.BOOLEAN)) {
+                return Type.BOOLEAN; // Logical NOT applies to booleans
             }
 //            else {
 //                throw new SemanticAnalysisException("Invalid type for unary operator '!'", this);

@@ -1,10 +1,8 @@
-{donothing=donothing} {}
-Func iteration Integer
-splat.parser.elements.statements.Assignment@404b9385
-Assignment analyze started
-Assignment analyze finished
-The left splat.parser.elements.VariableExpr@6d311334 right splat.parser.elements.LiteralExpr@682a0b20
-The + splat.parser.elements.Type@d7ee191e splat.parser.elements.Type@d7ee191e
-Expected: splat.parser.elements.Type@d7ee191e Actual: splat.parser.elements.Type@d7ee191e
-splat.parser.elements.statements.Return@3d075dc0
-Expected splat.parser.elements.Type@d7ee191e
+{} {names=splat.parser.elements.Type@943a4c31}
+I DONE 2
+Stmt iteration splat.parser.elements.statements.IfThenElse@404b9385
+AAAAAA
+The cond splat.parser.elements.BinaryExpr@6d311334
+The left splat.parser.elements.LiteralExpr@682a0b20 right splat.parser.elements.LiteralExpr@3d075dc0
+The == splat.parser.elements.Type@d7ee191e splat.parser.elements.Type@d7ee191e
+AAAAAA splat.parser.elements.Type@67140408

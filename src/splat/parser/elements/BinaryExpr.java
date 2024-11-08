@@ -44,8 +44,8 @@ public class BinaryExpr extends Expression {
                 }
             case "&&":
             case "||":
-                if (leftType.equals(Type.BOOL) && rightType.equals(Type.BOOL)) {
-                    return Type.BOOL;
+                if (leftType.equals(Type.BOOLEAN) && rightType.equals(Type.BOOLEAN)) {
+                    return Type.BOOLEAN;
                 } else {
 //                    throw new SemanticAnalysisException("Logical operators require boolean operands", this);
                     return null;
@@ -53,7 +53,7 @@ public class BinaryExpr extends Expression {
             case "==":
             case "!=":
                 if (leftType.equals(rightType)) {
-                    return Type.BOOL; // Comparison operators result in boolean
+                    return Type.BOOLEAN; // Comparison operators result in boolean
                 } else {
 //                    throw new SemanticAnalysisException("Type mismatch for comparison operator " + operator, this);
                     return null;
@@ -64,7 +64,7 @@ public class BinaryExpr extends Expression {
             case ">=":
                 if ((leftType.equals(Type.INT) || leftType.equals(Type.FLOAT) || leftType.equals(Type.STRING)) &&
                         leftType.equals(rightType)) {
-                    return Type.BOOL; // Relational operators result in boolean
+                    return Type.BOOLEAN; // Relational operators result in boolean
                 } else {
                     // throw new SemanticAnalysisException("Type mismatch for relational operator " + operator, this);
                     return null;

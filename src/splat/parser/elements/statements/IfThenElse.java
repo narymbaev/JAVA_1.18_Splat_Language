@@ -37,11 +37,10 @@ public class IfThenElse extends Statement {
             throw new SemanticAnalysisException("Condition is not set properly", this);
         }
 
-        if (!conditionType.equals(Type.BOOLEAN)) {
+        if (!(conditionType.equals(Type.BOOL) || conditionType.equals(Type.BOOLEAN))) {
             throw new SemanticAnalysisException("Condition in if statement must be boolean", this);
         }
 
-        System.out.println("AAAAAA");
 
         // Analyze then block
         for (Statement stmt : thenStmts) {

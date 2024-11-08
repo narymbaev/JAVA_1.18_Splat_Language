@@ -90,6 +90,13 @@ public class SemanticAnalyzer {
 //			}
 		}
 
+		Type res = varAndParamMap.get("1result");
+//		System.out.println("Result " + res);
+
+		if (res != null && !res.getValue().equals("Void")) {
+			hasReturnStatement = true;
+		}
+
 		// If no return statement was found for a non-void function, throw an error
 		if (!hasReturnStatement && !expectedReturnType.equals(Type.VOID)) {
 			throw new SemanticAnalysisException("Missing return statement in function " + funcDecl.getReturnType(), funcDecl);
