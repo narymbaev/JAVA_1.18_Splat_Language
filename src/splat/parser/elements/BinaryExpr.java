@@ -1,5 +1,6 @@
 package splat.parser.elements;
 
+import splat.executor.Value;
 import splat.lexer.Token;
 
 import javax.sound.midi.SysexMessage;
@@ -75,6 +76,12 @@ public class BinaryExpr extends Expression {
                 // throw new SemanticAnalysisException("Unknown binary operator: " + operator, this);
                 return null;
         }
+    }
+
+    @Override
+    public Value evaluate(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) {
+        //FIXME
+        return null;
     }
 
     // Getters and other methods...

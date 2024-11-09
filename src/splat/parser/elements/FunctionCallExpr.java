@@ -3,6 +3,7 @@ package splat.parser.elements;
 import java.util.List;
 import java.util.Map;
 
+import splat.executor.Value;
 import splat.lexer.Token;
 
 public class FunctionCallExpr extends Expression {
@@ -51,5 +52,11 @@ public class FunctionCallExpr extends Expression {
         }
 
         return function.getReturnType();
+    }
+
+    @Override
+    public Value evaluate(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) {
+        //FIXME
+        return null;
     }
 }

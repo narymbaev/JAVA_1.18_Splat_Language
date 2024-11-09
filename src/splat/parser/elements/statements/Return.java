@@ -1,5 +1,7 @@
 package splat.parser.elements.statements;
 
+import splat.executor.ReturnFromCall;
+import splat.executor.Value;
 import splat.lexer.Token;
 import splat.parser.elements.Expression;
 import splat.parser.elements.FunctionDecl;
@@ -42,6 +44,12 @@ public class Return extends Statement {
         }
 
         varAndParamMap.put("1result", actualType);
+
+    }
+
+    @Override
+    public void execute(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) throws ReturnFromCall {
+        // FIXME
 
     }
 }

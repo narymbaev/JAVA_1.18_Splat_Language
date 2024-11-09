@@ -1,5 +1,7 @@
 package splat.parser.elements.statements;
 
+import splat.executor.ReturnFromCall;
+import splat.executor.Value;
 import splat.lexer.Token;
 import splat.parser.elements.Expression;
 import splat.parser.elements.FunctionDecl;
@@ -43,5 +45,11 @@ public class FuncCall extends Statement {
                 throw new SemanticAnalysisException("Type mismatch in argument " + (i + 1) + " of function " + funcName, this);
             }
         }
+    }
+
+    @Override
+    public void execute(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) throws ReturnFromCall {
+        // FIXME
+
     }
 }

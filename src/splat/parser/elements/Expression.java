@@ -2,6 +2,7 @@ package splat.parser.elements;
 
 import java.util.Map;
 
+import splat.executor.Value;
 import splat.lexer.Token;
 
 public abstract class Expression extends ASTElement {
@@ -47,6 +48,6 @@ public abstract class Expression extends ASTElement {
 	 * contains variables or parameters -- we use this map to keep track of the
 	 * values of the items that are currently in scope
 	 */
-//	public abstract Value evaluate(Map<String, FunctionDecl> funcMap,
-//                                 Map<String, Value> varAndParamMap);
+	public abstract Value evaluate(Map<String, FunctionDecl> funcMap,
+								   Map<String, Value> varAndParamMap);
 }

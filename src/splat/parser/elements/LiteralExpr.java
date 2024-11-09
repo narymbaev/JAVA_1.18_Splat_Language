@@ -1,5 +1,6 @@
 package splat.parser.elements;
 
+import splat.executor.Value;
 import splat.lexer.Token;
 
 import java.util.Map;
@@ -22,5 +23,11 @@ public class LiteralExpr extends Expression {
         } else {
             return Type.STRING; // Assuming a STRING type exists for other literals
         }
+    }
+
+    @Override
+    public Value evaluate(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) {
+        //FIXME
+        return null;
     }
 }

@@ -1,5 +1,6 @@
 package splat.parser.elements;
 
+import splat.executor.Value;
 import splat.lexer.Token;
 
 import java.util.Map;
@@ -50,6 +51,12 @@ public class UnaryExpr extends Expression {
 //        else {
 //            throw new SemanticAnalysisException("Unknown unary operator: " + operator, this);
 //        }
+        return null;
+    }
+
+    @Override
+    public Value evaluate(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) {
+        //FIXME
         return null;
     }
 

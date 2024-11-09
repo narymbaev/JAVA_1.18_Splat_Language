@@ -1,5 +1,6 @@
 package splat.parser.elements;
 
+import splat.executor.Value;
 import splat.lexer.Token;
 
 import java.util.Map;
@@ -15,5 +16,11 @@ public class VariableExpr extends Expression {
         Type varType = varAndParamMap.get(varName);
 
         return varType;
+    }
+
+    @Override
+    public Value evaluate(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) {
+        //FIXME
+        return null;
     }
 }

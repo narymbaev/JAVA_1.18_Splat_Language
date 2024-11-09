@@ -1,5 +1,7 @@
 package splat.parser.elements.statements;
 
+import splat.executor.ReturnFromCall;
+import splat.executor.Value;
 import splat.lexer.Token;
 import splat.parser.elements.Expression;
 import splat.parser.elements.FunctionDecl;
@@ -31,5 +33,11 @@ public class Assignment extends Statement {
         if (!expectedType.equals(actualType)) {
             throw new SemanticAnalysisException("Type mismatch in assignment to " + varName, this);
         }
+    }
+
+    @Override
+    public void execute(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) throws ReturnFromCall {
+        // FIXME
+
     }
 }
