@@ -1,6 +1,9 @@
 package splat.parser.elements;
 
 import splat.executor.Value;
+import splat.executor.values.BooleanValue;
+import splat.executor.values.FloatValue;
+import splat.executor.values.IntValue;
 import splat.lexer.Token;
 
 import java.util.Map;
@@ -56,9 +59,26 @@ public class UnaryExpr extends Expression {
 
     @Override
     public Value evaluate(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) {
-        //FIXME
-        return null;
-    }
+        Value innerValue = expr.evaluate(funcMap, varAndParamMap);
 
-    // Getters and other methods...
+        // Apply the unary operator
+        switch (operator) {
+            case "-": // Negation for INT or FLOAT
+                if (innerValue instanceof IntValue) {
+                    return new IntValue(-((IntValue) innerValue).getValue());
+                } else if (innerValue instanceof FloatValue) {
+                    return new FloatValue(-((FloatValue) innerValue).getValue());
+                }
+                throw new RuntimeException("Invalid type for unary operator '-': " + innerValue);
+
+            case "!": // Logical NOT for BOOLEAN
+                if (innerValue instanceof BooleanValue) {
+                    return new BooleanValue(!((BooleanValue) innerValue).getValue());
+                }
+                throw new RuntimeException("Invalid type for unary operator '!': " + innerValue);
+
+            default:
+                throw new RuntimeException("Unknown unary operator: " + operator);
+        }
+    }
 }

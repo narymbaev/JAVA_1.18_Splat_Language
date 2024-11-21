@@ -20,7 +20,9 @@ public class VariableExpr extends Expression {
 
     @Override
     public Value evaluate(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) {
-        //FIXME
-        return null;
+        if (!varAndParamMap.containsKey(getToken().getValue())) {
+            throw new RuntimeException("Variable not defined: " + getToken().getValue());
+        }
+        return varAndParamMap.get(getToken().getValue());
     }
 }

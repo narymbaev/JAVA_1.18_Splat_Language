@@ -9,6 +9,7 @@ import splat.parser.elements.Statement;
 import splat.parser.elements.Type;
 import splat.semanticanalyzer.SemanticAnalysisException;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +50,26 @@ public class FuncCall extends Statement {
 
     @Override
     public void execute(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) throws ReturnFromCall {
-        // FIXME
+        if (!funcMap.containsKey(this.funcName)) {
+            throw new RuntimeException("Function not defined: " + this.funcName);
+        }
+
+        FunctionDecl funcDecl = funcMap.get(this.funcName);
+
+        // Set up a new variable map for the function
+        Map<String, Value> newVarAndParamMap = new HashMap<String, Value>();
+
+        // Map parameters to argument values
+//        for (int i = 0; i < arguments.size(); i++) {
+//            Value argValue = arguments.get(i).evaluate(varAndParamMap, funcMap);
+//            String paramName = funcDecl.getFuncParams().get(i).getLabel();
+//            newVarAndParamMap.put(paramName, argValue);
+//        }
+
+        // Execute function body
+        for (Statement stmt : funcDecl.getStmts()) {
+            stmt.execute(funcMap, newVarAndParamMap);
+        }
 
     }
 }

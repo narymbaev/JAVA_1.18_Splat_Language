@@ -29,7 +29,9 @@ public class Print extends Statement{
 
     @Override
     public void execute(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) throws ReturnFromCall {
-        // FIXME
+        Value result = expr.evaluate(funcMap, varAndParamMap);
 
+        // Print the result to the console
+        System.out.print(result.toString());
     }
 }

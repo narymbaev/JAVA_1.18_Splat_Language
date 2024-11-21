@@ -2,6 +2,7 @@ package splat.parser.elements.statements;
 
 import splat.executor.ReturnFromCall;
 import splat.executor.Value;
+import splat.executor.values.BooleanValue;
 import splat.lexer.Token;
 import splat.parser.elements.Expression;
 import splat.parser.elements.FunctionDecl;
@@ -32,7 +33,7 @@ public class While extends Statement {
         }
 
         // Check if the condition type is boolean
-        if (!conditionType.equals(Type.BOOL) && !conditionType.equals(Type.BOOLEAN)) {
+        if (!conditionType.equals(Type.BOOLEAN)) {
             throw new SemanticAnalysisException("While loop condition must be a boolean", this);
         }
 
@@ -45,6 +46,10 @@ public class While extends Statement {
 
     @Override
     public void execute(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) throws ReturnFromCall {
-        // FIXME
+        while (((BooleanValue) condition.evaluate(funcMap, varAndParamMap)).getValue()) {
+            for (Statement stmt : this.stmts) {
+                stmt.execute(funcMap, varAndParamMap);
+            }
+        }
     }
 }

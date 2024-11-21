@@ -37,7 +37,13 @@ public class Assignment extends Statement {
 
     @Override
     public void execute(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) throws ReturnFromCall {
-        // FIXME
+        // get value
+        Value rhsValue = expr.evaluate(funcMap, varAndParamMap);
 
+        // update value
+        if (!varAndParamMap.containsKey(this.varName)) {
+            throw new RuntimeException("Variable not defined: " + this.varName);
+        }
+        varAndParamMap.put(this.varName, rhsValue);
     }
 }

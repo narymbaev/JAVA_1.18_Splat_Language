@@ -49,7 +49,12 @@ public class Return extends Statement {
 
     @Override
     public void execute(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) throws ReturnFromCall {
-        // FIXME
+        Value returnValue = null;
 
+        if (expr != null) {
+            returnValue = expr.evaluate(funcMap, varAndParamMap);
+        }
+
+        throw new ReturnFromCall(returnValue);
     }
 }

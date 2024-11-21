@@ -1,6 +1,8 @@
 package splat.parser.elements;
 
 import splat.executor.Value;
+import splat.executor.values.BooleanValue;
+import splat.executor.values.IntValue;
 import splat.lexer.Token;
 
 import javax.sound.midi.SysexMessage;
@@ -80,9 +82,28 @@ public class BinaryExpr extends Expression {
 
     @Override
     public Value evaluate(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) {
-        //FIXME
-        return null;
-    }
+        Value leftValue = left.evaluate(funcMap, varAndParamMap);
+        Value rightValue = right.evaluate(funcMap, varAndParamMap);
 
-    // Getters and other methods...
+        // Perform the binary operation
+        switch (operator) {
+            case "+":
+                return new IntValue(((IntValue) leftValue).getValue() + ((IntValue) rightValue).getValue());
+            case "-":
+                return new IntValue(((IntValue) leftValue).getValue() - ((IntValue) rightValue).getValue());
+            case "*":
+                return new IntValue(((IntValue) leftValue).getValue() * ((IntValue) rightValue).getValue());
+            case "/":
+                if (((IntValue) rightValue).getValue() == 0) {
+                    throw new RuntimeException("Division by zero");
+                }
+                return new IntValue(((IntValue) leftValue).getValue() / ((IntValue) rightValue).getValue());
+            case "&&":
+                return new BooleanValue(((BooleanValue) leftValue).getValue() && ((BooleanValue) rightValue).getValue());
+            case "||":
+                return new BooleanValue(((BooleanValue) leftValue).getValue() || ((BooleanValue) rightValue).getValue());
+            default:
+                throw new RuntimeException("Unknown operator: " + operator);
+        }
+    }
 }

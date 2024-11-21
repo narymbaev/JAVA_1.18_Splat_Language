@@ -2,6 +2,7 @@ package splat.parser.elements.statements;
 
 import splat.executor.ReturnFromCall;
 import splat.executor.Value;
+import splat.executor.values.BooleanValue;
 import splat.lexer.Token;
 import splat.parser.elements.Expression;
 import splat.parser.elements.FunctionDecl;
@@ -36,7 +37,7 @@ public class IfThenElse extends Statement {
             throw new SemanticAnalysisException("Condition is not set properly", this);
         }
 
-        if (!(conditionType.equals(Type.BOOL) || conditionType.equals(Type.BOOLEAN))) {
+        if (!(conditionType.equals(Type.BOOLEAN))) {
             throw new SemanticAnalysisException("Condition in if statement must be boolean", this);
         }
 
@@ -56,7 +57,16 @@ public class IfThenElse extends Statement {
 
     @Override
     public void execute(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) throws ReturnFromCall {
-        // FIXME
+        BooleanValue conditionValue = (BooleanValue) condition.evaluate(funcMap, varAndParamMap);
 
+        if (conditionValue.getValue()) {
+            for (Statement stmt : thenStmts) {
+                stmt.execute(funcMap, varAndParamMap);
+            }
+        } else if (elseStmts != null) {
+            for (Statement stmt : elseStmts) {
+                stmt.execute(funcMap, varAndParamMap);
+            }
+        }
     }
 }
