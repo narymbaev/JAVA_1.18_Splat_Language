@@ -1,5 +1,6 @@
 package splat.parser.elements.statements;
 
+import splat.executor.ExecutionException;
 import splat.executor.ReturnFromCall;
 import splat.executor.Value;
 import splat.executor.values.BooleanValue;
@@ -56,7 +57,7 @@ public class IfThenElse extends Statement {
     }
 
     @Override
-    public void execute(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) throws ReturnFromCall {
+    public void execute(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) throws ReturnFromCall, ExecutionException {
         BooleanValue conditionValue = (BooleanValue) condition.evaluate(funcMap, varAndParamMap);
 
         if (conditionValue.getValue()) {

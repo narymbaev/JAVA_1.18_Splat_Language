@@ -1,5 +1,6 @@
 package splat.parser.elements.statements;
 
+import splat.executor.ExecutionException;
 import splat.executor.ReturnFromCall;
 import splat.executor.Value;
 import splat.lexer.Token;
@@ -48,7 +49,7 @@ public class Return extends Statement {
     }
 
     @Override
-    public void execute(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) throws ReturnFromCall {
+    public void execute(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) throws ReturnFromCall, ExecutionException {
         Value returnValue = null;
 
         if (expr != null) {

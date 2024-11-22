@@ -1,5 +1,7 @@
 package splat.parser.elements;
 
+import splat.executor.ExecutionException;
+import splat.executor.ReturnFromCall;
 import splat.executor.Value;
 import splat.executor.values.BooleanValue;
 import splat.executor.values.IntValue;
@@ -7,6 +9,7 @@ import splat.lexer.Token;
 
 import javax.sound.midi.SysexMessage;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class BinaryExpr extends Expression {
@@ -81,7 +84,7 @@ public class BinaryExpr extends Expression {
     }
 
     @Override
-    public Value evaluate(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) {
+    public Value evaluate(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) throws ReturnFromCall, ExecutionException {
         Value leftValue = left.evaluate(funcMap, varAndParamMap);
         Value rightValue = right.evaluate(funcMap, varAndParamMap);
 
@@ -95,13 +98,44 @@ public class BinaryExpr extends Expression {
                 return new IntValue(((IntValue) leftValue).getValue() * ((IntValue) rightValue).getValue());
             case "/":
                 if (((IntValue) rightValue).getValue() == 0) {
-                    throw new RuntimeException("Division by zero");
+                    throw new ExecutionException("Division by zero", this);
                 }
                 return new IntValue(((IntValue) leftValue).getValue() / ((IntValue) rightValue).getValue());
+            case "%":
+                return new IntValue(((IntValue) leftValue).getValue() % ((IntValue) rightValue).getValue());
             case "&&":
+            case "and":
                 return new BooleanValue(((BooleanValue) leftValue).getValue() && ((BooleanValue) rightValue).getValue());
             case "||":
+            case "or":
                 return new BooleanValue(((BooleanValue) leftValue).getValue() || ((BooleanValue) rightValue).getValue());
+            case "<":
+                return new BooleanValue(((IntValue) leftValue).getValue() < ((IntValue) rightValue).getValue());
+            case ">":
+                return new BooleanValue(((IntValue) leftValue).getValue() > ((IntValue) rightValue).getValue());
+            case "<=":
+                return new BooleanValue(((IntValue) leftValue).getValue() <= ((IntValue) rightValue).getValue());
+            case ">=":
+                return new BooleanValue(((IntValue) leftValue).getValue() >= ((IntValue) rightValue).getValue());
+
+            case "==":
+                if (leftValue instanceof IntValue && rightValue instanceof IntValue) {
+                    return new BooleanValue(((IntValue) leftValue).getValue() == ((IntValue) rightValue).getValue());
+                } else if (leftValue instanceof BooleanValue && rightValue instanceof BooleanValue) {
+                    return new BooleanValue(((BooleanValue) leftValue).getValue() == ((BooleanValue) rightValue).getValue());
+                } else {
+                    throw new RuntimeException("Type mismatch in equality comparison");
+                }
+
+            case "!=":
+                if (leftValue instanceof IntValue && rightValue instanceof IntValue) {
+                    return new BooleanValue(!Objects.equals(((IntValue) leftValue).getValue(), ((IntValue) rightValue).getValue()));
+                } else if (leftValue instanceof BooleanValue && rightValue instanceof BooleanValue) {
+                    return new BooleanValue(((BooleanValue) leftValue).getValue() != ((BooleanValue) rightValue).getValue());
+                } else {
+                    throw new RuntimeException("Type mismatch in inequality comparison");
+                }
+
             default:
                 throw new RuntimeException("Unknown operator: " + operator);
         }

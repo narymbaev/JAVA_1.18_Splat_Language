@@ -1,5 +1,6 @@
 package splat.parser.elements.statements;
 
+import splat.executor.ExecutionException;
 import splat.executor.ReturnFromCall;
 import splat.executor.Value;
 import splat.executor.values.BooleanValue;
@@ -45,7 +46,7 @@ public class While extends Statement {
     }
 
     @Override
-    public void execute(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) throws ReturnFromCall {
+    public void execute(Map<String, FunctionDecl> funcMap, Map<String, Value> varAndParamMap) throws ReturnFromCall, ExecutionException {
         while (((BooleanValue) condition.evaluate(funcMap, varAndParamMap)).getValue()) {
             for (Statement stmt : this.stmts) {
                 stmt.execute(funcMap, varAndParamMap);

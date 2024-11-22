@@ -1,5 +1,6 @@
 package splat.executor;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import splat.parser.elements.*;
@@ -7,9 +8,9 @@ import splat.parser.elements.*;
 public class Executor {
 
 	private ProgramAST progAST;
-	
-	private Map<String, FunctionDecl> funcMap;
-	private Map<String, Value> progVarMap;
+
+	private Map<String, FunctionDecl> funcMap = new HashMap<>();
+	private Map<String, Value> progVarMap = new HashMap<>();
 	
 	public Executor(ProgramAST progAST) {
 		this.progAST = progAST;
@@ -20,9 +21,9 @@ public class Executor {
 		// This sets the maps that will be needed for executing function 
 		// calls and storing the values of the program variables
 		setMaps();
-		
+
 		try {
-			
+
 			// Go through and execute each of the statements
 			for (Statement stmt : progAST.getStmts()) {
 				stmt.execute(funcMap, progVarMap);
@@ -44,7 +45,8 @@ public class Executor {
 		for (Declaration decl : progAST.getDecls()) {
 			if (decl instanceof FunctionDecl) {
 				FunctionDecl funcDecl = (FunctionDecl) decl;
-				funcMap.put(funcDecl.getLabel().toString(), funcDecl);
+				String funcName = funcDecl.getLabel().toString();
+				funcMap.put(funcName, funcDecl);
 			} else if (decl instanceof VariableDecl) {
 				VariableDecl varDecl = (VariableDecl) decl;
 				progVarMap.put(varDecl.getLabel().toString(), Value.defaultValue(varDecl.getType()));

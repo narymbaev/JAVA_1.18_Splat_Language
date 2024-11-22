@@ -8,6 +8,8 @@ import splat.lexer.Token;
 import splat.parser.elements.*;
 import splat.parser.elements.statements.*;
 
+import javax.sound.midi.SysexMessage;
+
 public class Parser {
 
 	private List<Token> tokens;
@@ -357,9 +359,9 @@ public class Parser {
 		} else if (peekTwoAhead("(")) {
 			return parseFuncCall();  // functions
 		} else if (isVariable(tokens.get(0))) {
-			return parseVariable();  // literals
+			return parseVariable();  // variable
 		} else if (isLiteral(tokens.get(0))) {
-			return parseLiteral(); // variable
+			return parseLiteral(); // literals
 		} else {
 			throw new ParseException("Statement parse exception", -1, -1);
 		}
